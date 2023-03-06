@@ -42,6 +42,8 @@ public class Locust implements Disposable, Initializable {
      */
     protected int numCrons = 0;
 
+    protected Map<String, Integer> userClassesCountFromMaster;
+
     /**
      * Actual number of clients spawned
      */
@@ -176,6 +178,9 @@ public class Locust implements Disposable, Initializable {
         }
 
         data.put("user_count", actualNumClients.get());
+        Map<String, Integer> myMap = new HashMap<String, Integer>();
+        myMap.put("user_classes_count", 1);
+        data.put("user_classes_count", myMap);
 
         try {
             transport.send(new Message("stats", data, nodeID));
@@ -186,7 +191,9 @@ public class Locust implements Disposable, Initializable {
     }
 
     private void onMessage(Message message) throws Exception {
+
         if (message.isHatch()) {
+
             onHatch(message);
             return;
         }
@@ -219,9 +226,12 @@ public class Locust implements Disposable, Initializable {
     }
 
     private void onHatch(Message message) throws Exception {
+//        this.userClassesCountFromMaster = (Map<String, Integer>) message.getData().get("user_classes_count");
+
         sendSpawning();
         Map data = message.getData();
         Float hatchRate = Float.valueOf("1");
+
 
         String previousNumKey = "num_clients";
         String currentNumKey = "num_users";
@@ -421,13 +431,18 @@ public class Locust implements Disposable, Initializable {
         logger.info("Hatch completed!");
         Map data = new HashMap(1);
         data.put("count", this.numCrons);
-        send("hatch_complete", data);
+        Map<String, Integer> myMap = new HashMap<String, Integer>();
+        myMap.put("user_classes_count", 1);
+        data.put("user_classes_count", myMap);
+        send("spawning_complete", data);
     }
 
     private void sendSpawning() {
         Map data = new HashMap(1);
-        data.put("count", 1);
-        send("spawning");
+        Map<String, Integer> myMap = new HashMap<String, Integer>();
+        myMap.put("user_classes_count", 1);
+        data.put("user_classes_count", myMap);
+        send("spawning", data);
     }
 
     protected void sendQuit() {
