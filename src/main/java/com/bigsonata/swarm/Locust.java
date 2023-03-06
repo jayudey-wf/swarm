@@ -219,15 +219,15 @@ public class Locust implements Disposable, Initializable {
     }
 
     private void onHatch(Message message) throws Exception {
-        sendHatching();
+        sendSpawning();
         Map data = message.getData();
-        Float hatchRate = Float.valueOf(data.get("hatch_rate").toString());
+        Float hatchRate = Float.valueOf("1");
 
         String previousNumKey = "num_clients";
         String currentNumKey = "num_users";
         // try to keep backward compatible
         String numKey = data.containsKey(previousNumKey) ? previousNumKey : currentNumKey;
-        int numUsers = Integer.parseInt(data.get(numKey).toString());
+        int numUsers = Integer.parseInt("1");
         startHatching(numUsers, hatchRate.doubleValue());
     }
 
@@ -424,8 +424,10 @@ public class Locust implements Disposable, Initializable {
         send("hatch_complete", data);
     }
 
-    private void sendHatching() {
-        send("hatching");
+    private void sendSpawning() {
+        Map data = new HashMap(1);
+        data.put("count", 1);
+        send("spawning");
     }
 
     protected void sendQuit() {
@@ -435,7 +437,7 @@ public class Locust implements Disposable, Initializable {
 
     protected void sendReady() {
         logger.info("Ready!");
-        send("client_ready");
+        send("client_ready", new HashMap<String, String >(1));
     }
 
     public void dispose() {

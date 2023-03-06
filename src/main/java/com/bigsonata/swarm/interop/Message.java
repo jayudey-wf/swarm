@@ -54,6 +54,9 @@ public class Message {
           case STRING:
             value = unpacker.unpackString();
             break;
+          case MAP:
+            value = unpacker.unpackMapHeader();
+            break;
           default:
             throw new IOException(
                 "Message received unsupported type: " + messageFormat.getValueType());
@@ -95,7 +98,7 @@ public class Message {
   }
 
   public boolean isHatch() {
-    return "hatch".equals(getType());
+    return "spawn".equals(getType());
   }
 
   public Map getData() {
