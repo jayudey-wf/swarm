@@ -159,13 +159,13 @@ public class Message {
 
     final MessagePacker packer;
 
-    public Visitor(MessagePacker packer) {
+    Visitor(MessagePacker packer) {
       this.packer = packer;
     }
 
-    public void visit(Object value) throws IOException {
+    void visit(Object value) throws IOException {
       if (null == value) {
-        visitNull();
+        visitNull(value);
       } else if (value instanceof String) {
         visitString(value);
       } else if (value instanceof Integer) {
@@ -189,35 +189,35 @@ public class Message {
       }
     }
 
-    private void visitNull() throws IOException {
+    void visitNull(Object value) throws IOException {
       this.packer.packNil();
     }
 
-    private void visitString(Object value) throws IOException {
+    void visitString(Object value) throws IOException {
       packer.packString((String)value);
     }
 
-    private void visitInt(Object value) throws IOException {
+    void visitInt(Object value) throws IOException {
       packer.packInt((Integer)value);
     }
 
-    private void visitLong(Object value) throws IOException {
+    void visitLong(Object value) throws IOException {
       packer.packLong((Long)value);
     }
 
-    private void visitBool(Object value) throws IOException {
+    void visitBool(Object value) throws IOException {
       packer.packBoolean((Boolean)value);
     }
 
-    private void visitFloat(Object value) throws IOException {
+    void visitFloat(Object value) throws IOException {
       packer.packFloat((Float)value);
     }
 
-    private void visitDouble(Object value) throws IOException {
+    void visitDouble(Object value) throws IOException {
       packer.packDouble((Double)value);
     }
 
-    private void visitMap(Object value) throws IOException {
+    void visitMap(Object value) throws IOException {
       Map<String, Object> map = (Map<String, Object>)value;
       packer.packMapHeader(map.size());
       for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -226,7 +226,7 @@ public class Message {
       }
     }
 
-    private void visitList(Object value) throws IOException {
+    void visitList(Object value) throws IOException {
       List<Object> list = (List<Object>)value;
       packer.packArrayHeader(list.size());
       for (Object object : list) {
