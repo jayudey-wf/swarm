@@ -422,7 +422,6 @@ public class Locust implements Disposable, Initializable {
     private void sendSpawningCompleted() {
         logger.info("Hatch completed!");
         Map data = new HashMap(1);
-        data.put("count", 1);
         data.put("user_classes_count", this.userClassesCountFromMaster);
         send("spawning_complete", data);
     }
