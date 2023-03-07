@@ -125,11 +125,7 @@ public class Message {
     Visitor visitor = new Visitor(packer);
     // a message contains three fields, (type & data & nodeID)
     packer.packArrayHeader(3);
-
-    // pack the first field
     packer.packString(this.type);
-
-    // pack the second field
     if (Message.TYPE_CLIENT_READY.equals(this.type)) {
       if (this.version == -1) {
         packer.packInt(this.version);
@@ -194,40 +190,40 @@ public class Message {
     }
 
     void visitString(Object value) throws IOException {
-      packer.packString((String)value);
+      packer.packString((String) value);
     }
 
     void visitInt(Object value) throws IOException {
-      packer.packInt((Integer)value);
+      packer.packInt((Integer) value);
     }
 
     void visitLong(Object value) throws IOException {
-      packer.packLong((Long)value);
+      packer.packInt(((Long) value).intValue());
     }
 
     void visitBool(Object value) throws IOException {
-      packer.packBoolean((Boolean)value);
+      packer.packBoolean((Boolean) value);
     }
 
     void visitFloat(Object value) throws IOException {
-      packer.packFloat((Float)value);
+      packer.packFloat((Float) value);
     }
 
     void visitDouble(Object value) throws IOException {
-      packer.packDouble((Double)value);
+      packer.packFloat(((Double) value).floatValue());
     }
 
     void visitMap(Object value) throws IOException {
-      Map<String, Object> map = (Map<String, Object>)value;
+      Map<String, Object> map = (Map<String, Object>) value;
       packer.packMapHeader(map.size());
-      for (Map.Entry<String, Object> entry : map.entrySet()) {
+      for (Map.Entry entry : map.entrySet()) {
         this.visitString(entry.getKey());
         this.visit(entry.getValue());
       }
     }
 
     void visitList(Object value) throws IOException {
-      List<Object> list = (List<Object>)value;
+      List<Object> list = (List<Object>) value;
       packer.packArrayHeader(list.size());
       for (Object object : list) {
         this.visit(object);
@@ -247,5 +243,3 @@ public class Message {
     }
   }
 }
-
-
