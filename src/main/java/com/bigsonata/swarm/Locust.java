@@ -169,7 +169,7 @@ public class Locust implements Disposable, Initializable {
     private void sendReport(Map data) {
         State currentState = this.state.get();
 
-        boolean updatable = (currentState == State.Running || currentState == State.Hatching);
+        boolean updatable = (currentState == State.Running || currentState == State.Spawning);
         if (!updatable) {
             // no need to send report
             return;
@@ -380,7 +380,7 @@ public class Locust implements Disposable, Initializable {
         logger.info("Spawning...");
         logger.info("> spawnCount={}", spawnCount);
 
-        this.state.set(State.Hatching);
+        this.state.set(State.Spawning);
 
         this.actualNumClients.set(0);
         this.numCrons = spawnCount;
@@ -413,7 +413,7 @@ public class Locust implements Disposable, Initializable {
     }
 
     private void sendSpawningCompleted() {
-        logger.info("Hatch completed!");
+        logger.info("Spawning completed!");
         Map data = new HashMap(1);
         data.put("user_classes_count", this.userClassesCountFromMaster);
         send("spawning_complete", data);
@@ -451,7 +451,7 @@ public class Locust implements Disposable, Initializable {
 
     private boolean isStoppable() {
         State currentState = this.state.get();
-        return currentState == State.Running || currentState == State.Hatching;
+        return currentState == State.Running || currentState == State.Spawning;
     }
 
     /**
@@ -467,7 +467,7 @@ public class Locust implements Disposable, Initializable {
         /**
          * Runner is submitting prototypes to its thread pool.
          */
-        Hatching,
+        Spawning,
 
         /**
          * Runner is done with submitting prototypes.
