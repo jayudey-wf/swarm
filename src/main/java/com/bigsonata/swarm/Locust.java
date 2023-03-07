@@ -327,7 +327,7 @@ public class Locust implements Disposable, Initializable {
 
     private void spawn(int cronCount) {
         logger.info(
-                "Hatching and swarming {} clients clients/s...",
+                "Spawning {} client/s...",
                 cronCount);
         final RateLimiter rateLimiter = RateLimiter.create(cronCount);
 
@@ -377,7 +377,7 @@ public class Locust implements Disposable, Initializable {
         }
         this.numCrons = spawnCount;
 
-        logger.info("Start hatching...");
+        logger.info("Spawning...");
         logger.info("> spawnCount={}", spawnCount);
 
         this.state.set(State.Hatching);
