@@ -5,7 +5,7 @@ import com.bigsonata.swarm.Locust;
 public class Benchmark implements Runnable {
   private static final String LOCUST_MASTER_HOST = "127.0.0.1";
   private static final int LOCUST_MASTER_PORT = 5557;
-  private static final int LOCUST_PARALLELISM = 16;
+  private static final int LOCUST_PARALLELISM = 8;
 
   public static void main(String[] args) {
     new Benchmark().run();
