@@ -427,10 +427,7 @@ public class Locust implements Disposable, Initializable {
     }
 
     private void sendSpawning() {
-        Map data = new HashMap(1);
-        data.put("count", this.numCrons);
-        data.put("user_classes_count", this.userClassesCountFromMaster);
-        send("spawning", data);
+        send("spawning");
     }
 
     protected void sendQuit() {
