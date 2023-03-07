@@ -218,7 +218,6 @@ public class Message {
     }
 
     private void visitMap(Object value) throws IOException {
-      System.out.println(value);
       Map<String, Object> map = (Map<String, Object>)value;
       packer.packMapHeader(map.size());
       for (Map.Entry<String, Object> entry : map.entrySet()) {

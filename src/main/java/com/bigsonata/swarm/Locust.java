@@ -187,8 +187,6 @@ public class Locust implements Disposable, Initializable {
     }
 
     private void onMessage(Message message) throws Exception {
-        System.out.println(message.getType());
-
         if (message.isSpawn()) {
             onSpawn(message);
             return;
@@ -223,7 +221,6 @@ public class Locust implements Disposable, Initializable {
 
     private void onSpawn(Message message) throws Exception {
         sendSpawning();
-        Map data = message.getData();
 
         Map<String, Integer> userClassesCount = (Map<String, Integer>) message.getData().get("user_classes_count");
         int amount = 0;
@@ -373,14 +370,11 @@ public class Locust implements Disposable, Initializable {
     }
 
     protected void startSpawning(int spawnCount) {
-        System.out.println("start spawning");
         State currentState = this.state.get();
-//        if (currentState != State.Ready && currentState != State.Stopped) {
-//            logger.error("Invalid state. Terminating now...");
-//            this.dispose();
-//            System.exit(-1);
-//        }
-        statsService.clearAll();
+
+        if (currentState == State.Ready){
+            statsService.clearAll();
+        }
         this.numCrons = spawnCount;
 
         logger.info("Start hatching...");
@@ -394,7 +388,6 @@ public class Locust implements Disposable, Initializable {
     }
 
     protected void onSpawnCompleted() {
-        System.out.println("spawn completed");
         sendSpawningCompleted();
         this.state.set(State.Running);
     }
